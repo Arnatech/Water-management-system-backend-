@@ -15,4 +15,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['username']) #Hash the password
         user.save()
-        return user
+        return user 
+    
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only = True)

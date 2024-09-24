@@ -16,7 +16,7 @@ class UserRegistrationView(APIView):
     
 class UserLoginView(APIView):
     def post(self, request):
-        serializer = UserLoginSerializer(data = request.data)
+        serializer = UserLoginSerializer(data =request.data)
         if serializer.is_valid():
             username = serializer.validated_data['username']
             password = serializer.validated_data['password']
@@ -24,7 +24,7 @@ class UserLoginView(APIView):
             try:
                 user = User.objects.get(username = username)
                 if user.check_password(password):
-                    #Generate Token later
+                    token, created = Token.objects.get_or_create(user=user)
                     return Response({"message": "Login successful"}, status = status.HTTP_200_OK)
                 else:
                     return Response({"error": "Login successful"}, status = status.HTTP_400_BAD_REQUEST)
